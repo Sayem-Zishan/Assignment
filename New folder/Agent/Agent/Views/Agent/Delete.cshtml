@@ -1,0 +1,77 @@
+﻿@model Agent.Models.User
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @Html.HiddenFor(model => model.ID)
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Markup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Markup)
+        </dd>
+
+    </dl>
+
+    @*@using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()*@
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" onclick="getPrefix()" /> |
+            @Html.ActionLink("Back to List", "AgentList")
+        </div>
+    @*}*@
+</div>
+
+<script>
+    function getPrefix() {
+ 
+        var ID = $('#ID').val();
+        debugger;
+
+        function gettoken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+        $.ajax({
+            cache: false,
+            url: '@Url.Action("IDelete", "Agent")',
+            data:  {
+                __RequestVerificationToken: gettoken(),
+                ID: ID
+            },
+            type: 'post',
+            success: function (data) {
+                window.location = '@Url.Action("AgentList", "Agent")'; 
+
+            }
+        });
+    }
+</script>
